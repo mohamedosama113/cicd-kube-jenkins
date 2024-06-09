@@ -85,7 +85,7 @@ pipeline{
             steps {
                 script {
                     // Log in to Docker Hub and push the image
-                    docker.withRegistry('', resistryCredential) {
+                    docker.withRegistry('', registryCredential) {
                         dockerImage.push("v${env.BUILD_ID}")
                         customImage.push('latest')
                     }
