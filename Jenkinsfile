@@ -81,6 +81,14 @@ pipeline{
                         }
     
         }
+         stage('Clean Up Unused Docker Images') {
+            steps {
+                script {
+                    // Remove dangling and unused Docker images
+                    sh 'docker rmi $registry:v$BUILD_ID'
+                }
+            }
+        }
          stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
@@ -92,14 +100,7 @@ pipeline{
                 }
             }
         }
-          stage('Clean Up Unused Docker Images') {
-            steps {
-                script {
-                    // Remove dangling and unused Docker images
-                    sh 'docker rmi $registry:v$BUILD_ID'
-                }
-            }
-        }
+         
         stage("Kuber Deploy"){
             agent{label 'KUBEMASTER'}
             steps{
