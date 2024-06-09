@@ -76,7 +76,7 @@ pipeline{
             steps{
                 script{
 
-                    dockerImage = docker.build(registry + "V:${env.BUILD_ID}")
+                    dockerImage = docker.build(registry + "v:${env.BUILD_ID}")
                 }
                         }
     
@@ -86,7 +86,7 @@ pipeline{
                 script {
                     // Log in to Docker Hub and push the image
                     docker.withRegistry('', resistryCredential) {
-                        dockerImage.push("V${env.BUILD_ID}")
+                        dockerImage.push("v${env.BUILD_ID}")
                         customImage.push('latest')
                     }
                 }
@@ -96,14 +96,14 @@ pipeline{
             steps {
                 script {
                     // Remove dangling and unused Docker images
-                    sh 'docker rmi $registry:V$BUILD_ID'
+                    sh 'docker rmi $registry:v$BUILD_ID'
                 }
             }
         }
         stage("Kuber Deploy"){
             agent{label 'KUBEMASTER'}
             steps{
-                sh"helm upgrade --install --force vprofile-stack helm/vprofilecharts --set appimage=${registry}:V${BUILD_ID} --namespace prod"
+                sh"helm upgrade --install --force vprofile-stack helm/vprofilecharts --set appimage=${registry}:v${BUILD_ID} --namespace prod"
             }
             post{
                 always{
