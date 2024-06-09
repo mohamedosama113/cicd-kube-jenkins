@@ -1,4 +1,4 @@
-pipeline {
+pipeline{
 
     agent any
 /*
@@ -7,9 +7,8 @@ pipeline {
     }
 */
     environment {
-        registry: "mohamedosama113/cicd-kube-jenkins"
-        registryCredential: 'dockerhub'
-
+        registry= "mohamedosama113/vproapp"
+        registryCredential= "dockerhub"
     }
 
     stages{
