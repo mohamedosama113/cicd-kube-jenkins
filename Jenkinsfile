@@ -105,6 +105,7 @@ pipeline{
         stage("Kuber Deploy"){
             agent{label 'KUBEMASTER'}
             steps{
+                sh"kubectl create namespace prod"
                 sh"helm upgrade --install --force vprofile-stack helm/vprofilecharts --set appimage=${registry}:v${BUILD_ID} --namespace prod"
             }
             post{
